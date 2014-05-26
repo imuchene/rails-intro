@@ -7,13 +7,17 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.all_ratings
+    @class = 'hilite'
     if params[:sort] == 'date'
       @movies = Movie.order('movies.release_date ASC')
-      @class = 'hilite'
     elsif
       params[:sort] == 'title'
       @movies = Movie.order('movies.title ASC')
-      @class = 'hilite'
+    elsif
+      params[:ratings]
+      @ratings = params[:ratings].collect{|x,y| x}
+      @movies = Movie.find_all_by_rating(@ratings)
     else
       @movies = Movie.all
     end
