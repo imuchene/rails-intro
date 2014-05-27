@@ -11,9 +11,9 @@
 %table#movies
   %thead
     %tr
-      %th{:class => (@class if params[:sort] == 'title')}= link_to 'Movie Title', {:action=>'index', :sort => 'title'}, :id => 'title_header' 
+      %th{:class => (@class if params[:sort] == 'title' || session[:sort] == 'title')}= link_to 'Movie Title', {:action=>'index', :sort => 'title'}, :id => 'title_header' 
       %th Rating
-      %th{:class => (@class if params[:sort] == 'date') }= link_to 'Release Date', {:action=>'index', :sort => 'date'}, :id => 'release_date_header'
+      %th{:class => (@class if params[:sort] == 'date' || session[:sort] == 'date') }= link_to 'Release Date', {:action=>'index', :sort => 'date'}, :id => 'release_date_header'
       %th More Info
   %tbody
     - @movies.each do |movie|
