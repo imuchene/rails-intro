@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -8,14 +8,14 @@ class MoviesController < ApplicationController
 
   def index
     
-    @all_ratings = Movie.all_ratings
+    @all_ratings = Movie::ALL_RATINGS
     @class = 'hilite'
   
-    if params[:sort] == 'date' || session[:sort] == 'date'
+    if params[:sort] == 'date'
       @movies = Movie.order('movies.release_date ASC')
       session[:sort] = 'date'
     elsif
-      params[:sort] == 'title' || session[:sort] == 'title'
+      params[:sort] == 'title'
       @movies = Movie.order('movies.title ASC')
       session[:sort] = 'title'
     elsif
@@ -23,7 +23,11 @@ class MoviesController < ApplicationController
       @ratings = params[:ratings].collect{|x,y| x}
       session[:ratings] = @ratings
       @movies = Movie.find_all_by_rating(@ratings)
-    else
+    elsif
+      session[:ratings]
+      @ratings = session[:ratings].collect{|x,y| x}
+      @movies = Movie.find_all_by_rating(@ratings)
+     else
       @movies = Movie.all
     end
   end
@@ -55,5 +59,6 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+
 
 end
